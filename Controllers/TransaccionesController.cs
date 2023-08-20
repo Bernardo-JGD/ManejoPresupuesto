@@ -100,7 +100,7 @@ namespace ManejoPresupuesto.Controllers
             return View(modelo);
         }
 
-        public async IActionResult Mensual(int year)
+        public async Task<IActionResult> Mensual(int year)
         {
             var usuarioId = servicioUsuarios.ObtenerUsuarioId();
 
