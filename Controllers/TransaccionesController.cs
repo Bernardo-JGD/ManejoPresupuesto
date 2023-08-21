@@ -177,6 +177,46 @@ namespace ManejoPresupuesto.Controllers
             return GenerarExcel(nombreArchivo, transacciones);
         }
 
+        [HttpGet]
+        public async Task<FileResult> ExportarExcelPorYear(int year)
+        {
+            var fechaInicio = new DateTime(year, 1, 1);
+            var fechaFin = fechaInicio.AddYears(1).AddDays(-1);
+            var usuarioId = servicioUsuarios.ObtenerUsuarioId();
+
+            var transacciones = await repositorioTransacciones.ObtenerPorUsuarioId(
+                new ParametroObtenerTransaccionesPorUsuario
+                {
+                    UsuarioId = usuarioId,
+                    FechaInicio = fechaInicio,
+                    FechaFin = fechaFin
+                }
+            );
+
+            var nombreArchivo = $"Manejo Presupuesto - {fechaInicio.ToString("yyyy")}.xlsx";
+            return GenerarExcel(nombreArchivo, transacciones);
+        }
+
+        [HttpGet]
+        public async Task<FileResult> ExportarExcelTodo()
+        {
+            var fechaInicio = DateTime.Today.AddYears(-100);
+            var fechaFin = DateTime.Today.AddYears(1000);
+            var usuarioId = servicioUsuarios.ObtenerUsuarioId();
+
+            var transacciones = await repositorioTransacciones.ObtenerPorUsuarioId(
+                new ParametroObtenerTransaccionesPorUsuario
+                {
+                    UsuarioId = usuarioId,
+                    FechaInicio = fechaInicio,
+                    FechaFin = fechaFin
+                }    
+            );
+
+            var nombreArchivo = $"Manejo Prespuestos - {DateTime.Today.ToString("dd-MM-yyyy")}.xlsx";
+            return GenerarExcel(nombreArchivo, transacciones);
+        }
+
         private FileResult GenerarExcel(string nombreArchivo, IEnumerable<Transaccion> transacciones)
         {
             DataTable dataTable = new DataTable("Transacciones");

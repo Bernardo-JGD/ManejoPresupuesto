@@ -4,3 +4,61 @@
 }
 
 <partial name="_Submenu" Model="SubMenuTransacciones.Calendario" />
+
+<div id="calendario" ></div>
+
+@section Scripts{
+    <script src="~/lib/fullcalendar/main.min.js" ></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function(){
+            const calendarioEl = document.getElementById('calendario');
+            const calendario = new FullCalendar.Calendar(calendarioEl, {
+                dayMaxEventRows: 3,
+                initialValue: 'dayGridMonth',
+                events: [
+                    {
+                        title: '2,500',
+                        start: '2023-05-01',
+                        end: '2023-05-01'
+                    },
+                    {
+                        title: '1,500',
+                        start: '2023-05-01',
+                        end: '2023-05-01',
+                        color: 'red'
+                    },
+                    {
+                        title: '500',
+                        start: '2023-05-02',
+                        end: '2023-05-01'
+                    },
+                    {
+                        title: '200',
+                        start: '2023-05-02',
+                        end: '2023-05-01',
+                        color: 'red'
+                    },
+                    {
+                        title: '800',
+                        start: '2023-05-02',
+                        end: '2023-05-01'
+                    },
+                    {
+                        title: '300',
+                        start: '2023-05-02',
+                        end: '2023-05-01',
+                        color: 'red'
+                    },
+                    {
+                        title: '2,500',
+                        start: '2023-05-03',
+                        end: '2023-05-01'
+                    },
+                ]
+            });
+
+            calendario.render();
+        })
+    </script>
+}
