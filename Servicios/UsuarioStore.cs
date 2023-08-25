@@ -5,9 +5,18 @@ namespace ManejoPresupuesto.Servicios
 {
     public class UsuarioStore : IUserStore<Usuario>, IUserEmailStore<Usuario>, IUserPasswordStore<Usuario>
     {
-        public Task<IdentityResult> CreateAsync(Usuario user, CancellationToken cancellationToken)
+
+        private readonly IRepositorioUsuarios repositorioUsuarios;
+
+        public UsuarioStore(IRepositorioUsuarios repositorioUsuarios)
         {
-            throw new NotImplementedException();
+            this.repositorioUsuarios = repositorioUsuarios;
+        }
+
+        public async Task<IdentityResult> CreateAsync(Usuario user, CancellationToken cancellationToken)
+        {
+            user.Id = await repositorioUsuarios.CrearUsuario(user);
+            return IdentityResult.Success;
         }
 
         public Task<IdentityResult> DeleteAsync(Usuario user, CancellationToken cancellationToken)
@@ -17,12 +26,12 @@ namespace ManejoPresupuesto.Servicios
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            
         }
 
-        public Task<Usuario> FindByEmailAsync(string normalizedEmail, CancellationToken cancellationToken)
+        public async Task<Usuario> FindByEmailAsync(string normalizedEmail, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return await repositorioUsuarios.BuscarUsuarioPorEmail(normalizedEmail);
         }
 
         public Task<Usuario> FindByIdAsync(string userId, CancellationToken cancellationToken)
@@ -30,14 +39,14 @@ namespace ManejoPresupuesto.Servicios
             throw new NotImplementedException();
         }
 
-        public Task<Usuario> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
+        public async Task<Usuario> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return await repositorioUsuarios.BuscarUsuarioPorEmail(normalizedUserName);
         }
 
         public Task<string> GetEmailAsync(Usuario user, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(user.Email);
         }
 
         public Task<bool> GetEmailConfirmedAsync(Usuario user, CancellationToken cancellationToken)
@@ -57,17 +66,17 @@ namespace ManejoPresupuesto.Servicios
 
         public Task<string> GetPasswordHashAsync(Usuario user, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(user.PasswordHash);
         }
 
         public Task<string> GetUserIdAsync(Usuario user, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(user.Id.ToString());
         }
 
         public Task<string> GetUserNameAsync(Usuario user, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(user.Email);
         }
 
         public Task<bool> HasPasswordAsync(Usuario user, CancellationToken cancellationToken)
@@ -87,17 +96,19 @@ namespace ManejoPresupuesto.Servicios
 
         public Task SetNormalizedEmailAsync(Usuario user, string normalizedEmail, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            user.EmailNormalizado = normalizedEmail;
+            return Task.CompletedTask;
         }
 
         public Task SetNormalizedUserNameAsync(Usuario user, string normalizedName, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
 
         public Task SetPasswordHashAsync(Usuario user, string passwordHash, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            user.PasswordHash = passwordHash;
+            return Task.CompletedTask;
         }
 
         public Task SetUserNameAsync(Usuario user, string userName, CancellationToken cancellationToken)
